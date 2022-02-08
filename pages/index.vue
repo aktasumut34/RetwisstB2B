@@ -1,15 +1,11 @@
 <template>
-  <button @click="log">{{ user }}</button>
+  <div><button @click="logout">Logout</button></div>
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from "@/store";
-import { storeToRefs } from "pinia";
-const userState = useUserStore();
-const { user } = storeToRefs(userState);
-const log = () => {
-  userState.login("asd");
-};
+import { useUserStore } from '~~/store';
+const user = useUserStore();
+const logout = () => user.logout();
 </script>
 
 <style></style>

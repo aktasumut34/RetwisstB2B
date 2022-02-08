@@ -37,7 +37,7 @@
             class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
           >
             <font-awesome-icon
-              :icon="['fas', 'user-lock']"
+              :icon="['fas', 'at']"
               fixed-width
               class="text-slate-300 group-focus-within:text-slate-500"
               :class="{
@@ -53,6 +53,44 @@
                 email.length > 0
             }"
             >E-mail</span
+          >
+        </div>
+        <div
+          class="group relative"
+          :class="{
+            'danger-shake': dangers.includes('password')
+          }"
+        >
+          <input
+            type="password"
+            class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+            v-model="password"
+            :class="{
+              'ring-retwisst-purple-normal': !validPassword,
+              'ring-retwisst-green-normal': validPassword,
+              ring: password.length > 0 || triedLogin
+            }"
+          />
+          <div
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'lock']"
+              fixed-width
+              class="text-slate-300 group-focus-within:text-slate-500"
+              :class="{
+                'text-slate-500': password.length > 0 || triedLogin
+              }"
+            />
+          </div>
+
+          <span
+            class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+            :class="{
+              '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
+                password.length > 0
+            }"
+            >Password</span
           >
         </div>
         <button
@@ -95,11 +133,18 @@
 
 <script setup>
 import is from 'is_js';
+import { useUserStore } from '~~/store';
 const email = ref('');
+const password = ref('');
+const route = useRouter();
 const triedLogin = ref(false);
 const validMail = computed(() => is.email(email.value));
+const validPassword = computed(() => password.value.length >= 5);
+const loginLoading = ref(false);
 const dangers = ref([]);
-const login = () => {
+const userStore = useUserStore();
+const whyNot = ref('');
+const login = async () => {
   triedLogin.value = true;
   if (!validMail.value) dangers.value.push('email');
   if (dangers.value.length > 0) {
@@ -107,6 +152,39 @@ const login = () => {
       dangers.value = [];
     }, 250);
     return;
+  } else {
+    loginLoading.value = true;
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value
+        })
+      });
+      if (response.status === 200) {
+        const { token } = await response.json();
+        userStore.setToken(token);
+        route.push('/');
+      } else {
+        const { errors } = await response.json();
+        if (errors[0].type === 'password') {
+          password.value = '';
+          whyNot.value = 'Password was incorrect';
+          dangers.value.push('password');
+        } else if (errors[0].type === 'email') {
+          email.value = '';
+          whyNot.value = "User couldn't be found";
+          dangers.value.push('email');
+        } else throw new Error('Unknown error');
+      }
+    } catch (error) {
+      whyNot.value = 'Something went wrong';
+    }
   }
 };
 </script>
