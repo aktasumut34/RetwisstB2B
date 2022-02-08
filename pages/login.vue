@@ -1,6 +1,8 @@
 <template>
-  <div class="flex h-screen w-full items-center justify-center">
-    <div class="flex flex-col rounded-md p-6 shadow-2xl lg:p-10 2xl:p-16">
+  <div class="flex h-full min-h-screen w-full items-center justify-center p-10">
+    <div
+      class="m-12 flex min-w-[35%] flex-col rounded-md p-6 shadow-2xl lg:p-10 2xl:p-16"
+    >
       <div class="flex flex-col gap-6">
         <div class="mx-auto">
           <img src="/logo.png" alt="Retwisst B2B Logo" class="" />
@@ -8,9 +10,9 @@
         <h1
           class="text-center text-3xl font-thin text-slate-700 lg:text-4xl 2xl:text-5xl"
         >
-          Retwisst B2B
+          Log In
         </h1>
-        <span class="text-sm text-slate-400">
+        <span class="text-center text-sm text-slate-400">
           Log in to your account to continue to Retwisst B2B.
         </span>
       </div>
@@ -82,6 +84,10 @@
           <img src="/linkedin.svg" class="mr-4 h-5 w-5" />
           Continue with LinkedIn
         </a>
+      </div>
+      <div class="mt-8 flex flex-col gap-2">
+        <NuxtLink to="/forgot-password">Forgot password?</NuxtLink>
+        <NuxtLink to="/register">Create a new account</NuxtLink>
       </div>
     </div>
   </div>
