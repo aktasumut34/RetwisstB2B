@@ -32,7 +32,7 @@
           >
             <input
               type="text"
-              class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+              class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
               :class="{
                 'ring-retwisst-purple-normal': !validName,
                 'ring-retwisst-green-normal': validName,
@@ -40,21 +40,9 @@
               }"
               v-model="name"
             />
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'id-badge']"
-                fixed-width
-                class="text-slate-300 group-focus-within:text-slate-500"
-                :class="{
-                  'text-slate-500': name.length > 0 || triedLogin
-                }"
-              />
-            </div>
 
             <span
-              class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+              class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
               :class="{
                 '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                   name.length > 0
@@ -70,7 +58,7 @@
           >
             <input
               type="text"
-              class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+              class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
               :class="{
                 'ring-retwisst-purple-normal': !validMail,
                 'ring-retwisst-green-normal': validMail,
@@ -78,21 +66,9 @@
               }"
               v-model="email"
             />
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'at']"
-                fixed-width
-                class="text-slate-300 group-focus-within:text-slate-500"
-                :class="{
-                  'text-slate-500': email.length > 0 || triedLogin
-                }"
-              />
-            </div>
 
             <span
-              class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+              class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
               :class="{
                 '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                   email.length > 0
@@ -108,7 +84,7 @@
           >
             <input
               type="password"
-              class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+              class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
               :class="{
                 'ring-retwisst-purple-normal': !validPassword,
                 'ring-retwisst-green-normal': validPassword,
@@ -116,21 +92,9 @@
               }"
               v-model="password"
             />
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'lock']"
-                fixed-width
-                class="text-slate-300 group-focus-within:text-slate-500"
-                :class="{
-                  'text-slate-500': password.length > 0 || triedLogin
-                }"
-              />
-            </div>
 
             <span
-              class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+              class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
               :class="{
                 '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                   password.length > 0
@@ -146,7 +110,7 @@
           >
             <input
               type="password"
-              class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+              class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
               :class="{
                 'ring-retwisst-purple-normal': !validPassword,
                 'ring-retwisst-green-normal': validPassword,
@@ -154,21 +118,9 @@
               }"
               v-model="passwordConfirm"
             />
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'lock']"
-                fixed-width
-                class="text-slate-300 group-focus-within:text-slate-500"
-                :class="{
-                  'text-slate-500': passwordConfirm.length > 0 || triedLogin
-                }"
-              />
-            </div>
 
             <span
-              class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+              class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
               :class="{
                 '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                   passwordConfirm.length > 0
@@ -197,12 +149,7 @@
           class="mt-4 w-full rounded bg-retwisst-purple-normal py-2 font-thin text-white outline-none ring-0 ring-retwisst-purple-normal ring-offset-2 transition-colors hover:bg-retwisst-purple-dark focus:outline-none focus:ring-2 active:bg-retwisst-purple-darkest"
           @click="nextStep"
         >
-          <template v-if="regLoading">
-            <font-awesome-icon
-              :icon="['fas', 'spinner']"
-              spin
-            ></font-awesome-icon>
-          </template>
+          <template v-if="regLoading"> ... </template>
           <template v-else> Continue </template>
         </button>
       </div>
@@ -228,12 +175,7 @@
             class="rounded-md bg-retwisst-green-dark px-4 py-2 text-white"
             @click="verifyPhone"
           >
-            <template v-if="phoneLoading">
-              <font-awesome-icon
-                :icon="['fas', 'spinner']"
-                spin
-              ></font-awesome-icon>
-            </template>
+            <template v-if="phoneLoading"> ... </template>
             <template v-else> Verify </template>
           </button>
 
@@ -266,6 +208,7 @@ const triedLogin = ref(false);
 const invalidMails = ref([]);
 const regLoading = ref(false);
 const phoneLoading = ref(false);
+const tooken = ref('');
 const validMail = computed(
   () => is.email(email.value) && !invalidMails.value.includes(email.value)
 );
@@ -302,7 +245,7 @@ const nextStep = async () => {
       regLoading.value = true;
       try {
         const response = await fetch(
-          'http://localhost:3000/api/auth/register',
+          'http://localhost:3100/api/auth/register',
           {
             method: 'POST',
             headers: {
@@ -317,7 +260,7 @@ const nextStep = async () => {
         );
         if (response.status === 200) {
           const { token } = await response.json();
-          localStorage.setItem('token', token);
+          tooken.value = token;
           curStep.value = 1;
           whyNot.value = '';
         } else {
@@ -344,12 +287,12 @@ const nextStep = async () => {
       try {
         regLoading.value = true;
         const response = await fetch(
-          'http://localhost:3000/api/sms/send-2fa-code',
+          'http://localhost:3100/api/sms/send-2fa-code',
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`
+              Authorization: `Bearer ${tooken.value}`
             },
             body: JSON.stringify({
               to: formattedPhone.value
@@ -375,12 +318,12 @@ const verifyPhone = async () => {
   try {
     phoneLoading.value = true;
     const response = await fetch(
-      'http://localhost:3000/api/sms/verify-2fa-code',
+      'http://localhost:3100/api/sms/verify-2fa-code',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${tooken.value}`
         },
         body: JSON.stringify({
           to: formattedPhone.value,
@@ -391,6 +334,7 @@ const verifyPhone = async () => {
     const data = await response.json();
     if (response.status === 200) {
       if (data.success) {
+        localStorage.setItem('token', tooken.value);
         window.location.href = '/';
       } else {
         phoneValidationError.value = 'Invalid code! Please try again.';

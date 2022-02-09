@@ -17,6 +17,12 @@
         </span>
       </div>
       <div class="mt-10 flex flex-col gap-6">
+        <span
+          v-if="triedLogin && whyNot.length"
+          class="mb-2 text-sm text-red-600"
+        >
+          {{ whyNot }}
+        </span>
         <div
           class="group relative"
           :class="{
@@ -25,7 +31,7 @@
         >
           <input
             type="text"
-            class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+            class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
             :class="{
               'ring-retwisst-purple-normal': !validMail,
               'ring-retwisst-green-normal': validMail,
@@ -33,21 +39,9 @@
             }"
             v-model="email"
           />
-          <div
-            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'at']"
-              fixed-width
-              class="text-slate-300 group-focus-within:text-slate-500"
-              :class="{
-                'text-slate-500': email.length > 0 || triedLogin
-              }"
-            />
-          </div>
 
           <span
-            class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+            class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
             :class="{
               '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                 email.length > 0
@@ -63,7 +57,7 @@
         >
           <input
             type="password"
-            class="relative w-full rounded border-0 bg-white py-3 pl-12 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+            class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
             v-model="password"
             :class="{
               'ring-retwisst-purple-normal': !validPassword,
@@ -71,21 +65,9 @@
               ring: password.length > 0 || triedLogin
             }"
           />
-          <div
-            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'lock']"
-              fixed-width
-              class="text-slate-300 group-focus-within:text-slate-500"
-              :class="{
-                'text-slate-500': password.length > 0 || triedLogin
-              }"
-            />
-          </div>
 
           <span
-            class="pointer-events-none absolute top-2 left-12 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+            class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
             :class="{
               '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
                 password.length > 0
@@ -124,7 +106,7 @@
         </a>
       </div>
       <div class="mt-8 flex flex-col gap-2">
-        <NuxtLink to="/forgot-password">Forgot password?</NuxtLink>
+        <NuxtLink to="/register">Forgot password?</NuxtLink>
         <NuxtLink to="/register">Create a new account</NuxtLink>
       </div>
     </div>
@@ -155,7 +137,7 @@ const login = async () => {
   } else {
     loginLoading.value = true;
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('http://localhost:3100/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

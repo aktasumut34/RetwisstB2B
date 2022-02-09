@@ -4,10 +4,6 @@
   </NuxtLayout>
 </template>
 
-<script>
-import '@fortawesome/fontawesome-svg-core/styles.css';
-</script>
-
 <style>
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

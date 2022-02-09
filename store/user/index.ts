@@ -21,20 +21,21 @@ export default defineStore('user', {
       this.user = user;
     },
     async logout() {
-      const response = await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
-      const { success } = await response.json();
-      if (success) {
-        this.token = '';
+      try {
+        const response = await fetch('http://localhost:3100/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+      } catch (error) {
+        return false;
+      } finally {
         if (process.client) {
           localStorage.removeItem('token');
+          this.token = '';
         }
         const router = useRouter();
         router.push('/login');
       }
-      return false;
     }
   }
 });
