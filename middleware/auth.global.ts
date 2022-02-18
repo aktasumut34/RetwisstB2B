@@ -25,22 +25,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         if (token) {
           userStore.setToken(token);
         }
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
-    try {
-      const userResponse = await fetch('http://localhost:3100/api/user', {
-        credentials: 'include',
-        headers: {
-          Authorization: `Bearer ${userStore.token}`
-        }
-      });
-      if (userResponse.status === 200) {
-        const { user } = await userResponse.json();
-        userStore.setUser(user);
-      }
-    } catch (e) {}
+  }
+  if (userStore.token) {
+    userStore.syncUser();
   }
   if (to.path === '/login' || to.path === '/register') {
     if (userStore.token) {

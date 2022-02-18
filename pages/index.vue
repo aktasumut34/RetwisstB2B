@@ -1,11 +1,10 @@
 <template>
-  <div v-if="user.token"><AuthHead></AuthHead></div>
-  <div v-else>Selam</div>
+  <div v-if="userStore?.token">
+    <AuthHead></AuthHead>
+  </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useUserStore } from '~~/store';
-const user = useUserStore();
+const userStore = useUserStore();
 </script>
-
-<style></style>

@@ -1,6 +1,6 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
+  <NuxtLayout class="flex justify-center">
+    <NuxtPage class="flex min-h-[110vh] w-full max-w-[1500px] flex-col p-10" />
   </NuxtLayout>
 </template>
 

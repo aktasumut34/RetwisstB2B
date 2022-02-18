@@ -37,6 +37,7 @@
               'ring-retwisst-green-normal': validMail,
               ring: email.length > 0 || triedLogin
             }"
+            v-on:keyup.enter="login"
             v-model="email"
           />
 
@@ -59,6 +60,7 @@
             type="password"
             class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
             v-model="password"
+            v-on:keyup.enter="login"
             :class="{
               'ring-retwisst-purple-normal': !validPassword,
               'ring-retwisst-green-normal': validPassword,
@@ -154,12 +156,12 @@ const login = async () => {
         route.push('/');
       } else {
         const { errors } = await response.json();
+        email.value = '';
+        password.value = '';
         if (errors[0].type === 'password') {
-          password.value = '';
           whyNot.value = 'Password was incorrect';
           dangers.value.push('password');
         } else if (errors[0].type === 'email') {
-          email.value = '';
           whyNot.value = "User couldn't be found";
           dangers.value.push('email');
         } else throw new Error('Unknown error');
