@@ -148,16 +148,18 @@
               </div>
             </div>
           </div>
-          <div class="w-full max-w-[140px]">
-            <vue-number-input
-              :model-value="quantity"
-              :min="1"
-              :inputtable="false"
-              @update:model-value="updateQuantity"
-              controls
-              center
-              class="mt-8"
-            ></vue-number-input>
+          <div class="mt-4 flex flex-col gap-2">
+            <span class="text-xs text-slate-400">Quantity</span>
+            <div class="max-w-[140px]">
+              <vue-number-input
+                :model-value="quantity"
+                :min="1"
+                :inputtable="false"
+                @update:model-value="updateQuantity"
+                controls
+                center
+              ></vue-number-input>
+            </div>
           </div>
           <button
             class="mt-8 flex flex items-center justify-center border border-retwisst-green-normal bg-retwisst-green-normal py-2 text-white transition"
@@ -174,38 +176,43 @@
             >
             <span v-else><img src="/loader.svg" class="h-6 w-6" /></span>
           </button>
-          <div class="mt-8 flex justify-around">
-            <div class="flex flex-col items-center gap-2">
-              <img src="/box.svg" class="h-24 w-24" />
-              <div class="flex flex-col text-lg font-extralight text-slate-600">
-                <span class="text-center" v-if="!validVariant"
-                  >{{ productPerBoxRange.min }} ~
-                  {{ productPerBoxRange.max }}</span
+          <div class="mt-8 flex flex-col gap-4">
+            <span class="text-xs text-slate-400">Quantities & Packaging</span>
+            <div class="flex justify-around">
+              <div class="flex flex-col items-center gap-2">
+                <img src="/box.svg" class="h-24 w-24" />
+                <div
+                  class="flex flex-col text-lg font-extralight text-slate-600"
                 >
-                <span class="text-center" v-else>{{
-                  validVariant.productPerBox
-                }}</span>
-                <span class="text-center text-sm">product per package</span>
+                  <span class="text-center" v-if="!validVariant"
+                    >{{ productPerBoxRange.min }} ~
+                    {{ productPerBoxRange.max }}</span
+                  >
+                  <span class="text-center" v-else>{{
+                    validVariant.productPerBox
+                  }}</span>
+                  <span class="text-center text-sm">product per package</span>
+                </div>
               </div>
-            </div>
-            <div class="flex flex-col items-center justify-center gap-2">
-              <img src="/pallet.svg" class="h-24 w-24" />
-              <div
-                class="flex flex-col justify-center text-lg font-extralight text-slate-600"
-              >
-                <span class="text-center" v-if="!validVariant"
-                  >{{ boxPerPalletRange.min }} ~
-                  {{ boxPerPalletRange.max }}</span
+              <div class="flex flex-col items-center justify-center gap-2">
+                <img src="/pallet.svg" class="h-24 w-24" />
+                <div
+                  class="flex flex-col justify-center text-lg font-extralight text-slate-600"
                 >
-                <span class="text-center" v-else>{{
-                  validVariant.boxPerPallet
-                }}</span>
-                <span class="text-center text-sm">package per pallet</span>
-                <span class="text-center text-xs" v-if="validVariant"
-                  >(1 package fills ~{{
-                    ((1 / validVariant.boxPerPallet) * 100).toFixed(1)
-                  }}% of EuroPallet)</span
-                >
+                  <span class="text-center" v-if="!validVariant"
+                    >{{ boxPerPalletRange.min }} ~
+                    {{ boxPerPalletRange.max }}</span
+                  >
+                  <span class="text-center" v-else>{{
+                    validVariant.boxPerPallet
+                  }}</span>
+                  <span class="text-center text-sm">package per pallet</span>
+                  <span class="text-center text-xs" v-if="validVariant"
+                    >(1 package fills ~{{
+                      ((1 / validVariant.boxPerPallet) * 100).toFixed(1)
+                    }}% of EuroPallet)</span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -432,10 +439,10 @@ const addToCart = async () => {
       notify({
         group: 'custom-template',
         title: 'SUCCESS!',
-        text: `<b>${product.ProductDescriptions[0].name}</b> (${selecteds.join(
-          ', '
-        )})<br/>has been added to your cart.`,
-        duration: 1500
+        text: `<b>${quantity.value} x ${
+          product.ProductDescriptions[0].name
+        }</b> (${selecteds.join(', ')})<br/>has been added to your cart.`,
+        duration: 3000
       });
     }
     loadingAddToCart.value = false;

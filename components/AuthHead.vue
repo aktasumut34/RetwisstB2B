@@ -15,6 +15,11 @@
                 {{ item.title }}
               </div>
               <div class="custom-template-text" v-html="item.text" />
+              <div>
+                <NuxtLink to="/checkout" class="font-bold"
+                  >Go to checkout</NuxtLink
+                >
+              </div>
             </div>
             <div class="custom-template-close text-xs" @click="c">
               <svg
@@ -80,7 +85,10 @@
           >CART</span
         >
       </div>
-      <div v-if="user.user.CartItems.length > 0" class="flex flex-col divide-y">
+      <div
+        v-if="user?.user?.CartItems?.length > 0"
+        class="flex flex-col divide-y"
+      >
         <div
           class="grid grid-cols-12 items-center justify-center gap-2 rounded-sm py-4"
           v-for="cartItem in user.user.CartItems"
@@ -119,7 +127,7 @@
           </div>
           <div class="col-span-1 flex items-end justify-end">
             <button
-              class="flex items-center justify-center rounded-full bg-slate-700"
+              class="flex items-center justify-center rounded-full bg-slate-700 transition-colors hover:bg-slate-800 active:bg-slate-900"
               @click="removeCartItem(cartItem.id)"
             >
               <svg
