@@ -1,7 +1,12 @@
 <template>
   <button
-    class="flex items-center justify-center gap-1 rounded-xl bg-retwisst-green-darkest px-2 py-2 text-slate-100 shadow-md shadow-retwisst-green-normal transition-colors hover:bg-retwisst-green-dark active:bg-retwisst-green-normal sm:px-4"
+    class="relative flex items-center justify-center gap-1 rounded-xl bg-retwisst-green-darkest px-2 py-2 text-slate-100 shadow-md shadow-retwisst-green-normal transition-colors hover:bg-retwisst-green-dark active:bg-retwisst-green-normal sm:px-4"
   >
+    <span
+      v-if="cartCount > 0"
+      class="pointer-events-none absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-retwisst-purple-normal text-xs"
+      >{{ cartCount }}</span
+    >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="pointer-events-none h-8 w-8 sm:h-6 sm:w-6"
@@ -19,3 +24,9 @@
     <span class="pointer-events-none hidden sm:block"> Cart </span>
   </button>
 </template>
+
+<script lang="ts" setup>
+import { useUserStore } from '~~/store';
+const user = useUserStore();
+const cartCount = computed(() => user.user.CartItems?.length || 0);
+</script>

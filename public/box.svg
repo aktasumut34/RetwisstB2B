@@ -3,10 +3,10 @@
 <svg version="1.1" id="katman_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 15.8 15" style="enable-background:new 0 0 15.8 15;" xml:space="preserve">
 <g>
-	<path style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:10;" d="M13.397,14.686H2.403
+	<path style="fill:none;stroke:#334155;stroke-width:0.5;stroke-miterlimit:10;" d="M13.397,14.686H2.403
 		c-0.933,0-1.689-0.756-1.689-1.689V2.003c0-0.933,0.756-1.689,1.689-1.689h10.994c0.933,0,1.689,0.756,1.689,1.689v10.994
 		C15.086,13.93,14.33,14.686,13.397,14.686z"/>
 	
-		<rect x="6.454" y="0.314" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:10;" width="2.892" height="6.534"/>
+		<rect x="6.454" y="0.314" style="fill:none;stroke:#334155;stroke-width:0.5;stroke-miterlimit:10;" width="2.892" height="6.534"/>
 </g>
 </svg>

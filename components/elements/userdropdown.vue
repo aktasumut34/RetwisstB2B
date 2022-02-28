@@ -1,4 +1,3 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
   <Menu as="div" class="relative inline-block text-left">
     <div>
@@ -46,12 +45,76 @@
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-0 mt-2 w-56 origin-top-right divide-y rounded-md bg-white p-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       >
-        <div class="py-1">
+        <div class="px-1 py-2">
+          <div class="pl-1">
+            <span class="text-md font-bold leading-3 text-slate-700"
+              >ORDERS</span
+            >
+          </div>
           <MenuItem v-slot="{ active }">
+            <NuxtLink
+              to="/profile"
+              class="rounded-sm"
+              :class="[
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block w-full px-4 py-2 text-left text-sm'
+              ]"
+            >
+              My Orders
+            </NuxtLink>
+          </MenuItem>
+        </div>
+        <div class="px-1 py-2">
+          <div class="pl-1">
+            <span class="text-md font-bold leading-3 text-slate-700">HELP</span>
+          </div>
+          <MenuItem v-slot="{ active }">
+            <NuxtLink
+              to="/faq"
+              class="rounded-sm"
+              :class="[
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block w-full px-4 py-2 text-left text-sm'
+              ]"
+            >
+              FAQ
+            </NuxtLink> </MenuItem
+          ><MenuItem v-slot="{ active }">
+            <NuxtLink
+              to="/support"
+              class="rounded-sm"
+              :class="[
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block w-full px-4 py-2 text-left text-sm'
+              ]"
+            >
+              Support
+            </NuxtLink>
+          </MenuItem>
+        </div>
+        <div class="px-1 py-2">
+          <div class="pl-1">
+            <span class="text-md font-bold leading-3 text-slate-700"
+              >ACCOUNT</span
+            >
+          </div>
+          <MenuItem v-slot="{ active }">
+            <NuxtLink
+              to="/account"
+              class="rounded-sm"
+              :class="[
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block w-full px-4 py-2 text-left text-sm'
+              ]"
+            >
+              My Account
+            </NuxtLink> </MenuItem
+          ><MenuItem v-slot="{ active }">
             <button
               @click="logout"
+              class="rounded-sm"
               :class="[
                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                 'block w-full px-4 py-2 text-left text-sm'

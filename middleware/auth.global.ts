@@ -29,15 +29,23 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   }
   if (userStore.token) {
-    userStore.syncUser();
+    await userStore.syncUser();
   }
   if (to.path === '/login' || to.path === '/register') {
     if (userStore.token) {
-      window.location.href = '/';
+      window.location.href = userStore.user?.Role?.id === 1337 ? '/admin' : '/';
     }
   } else {
     if (!userStore.token) {
       window.location.href = '/login';
+    } else {
+      if (userStore.user?.Role?.id !== 1337 && to.path.startsWith('/admin')) {
+        window.location.href = '/';
+      } else if (
+        userStore.user?.Role?.id === 1337 &&
+        !to.path.startsWith('/admin')
+      )
+        window.location.href = '/admin';
     }
   }
 });

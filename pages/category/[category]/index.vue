@@ -1,7 +1,7 @@
 <template>
   <div v-if="userStore?.token">
     <AuthHead></AuthHead>
-    <div class="flex flex-col items-center gap-4 pb-6 md:flex-row">
+    <div class="flex flex-col items-center gap-4 pb-4 md:flex-row md:pb-6">
       <button
         class="flex items-center justify-center gap-1 rounded-lg border border-slate-300 px-2 py-2 text-slate-700 shadow-sm transition-colors hover:bg-slate-100 active:bg-slate-200 sm:px-4"
         @click="setFilterPage"
