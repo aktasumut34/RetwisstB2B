@@ -346,6 +346,10 @@ const verifyPhone = async () => {
   }
   phoneLoading.value = false;
 };
+
+useMeta({
+  title: `Register - Retwisst B2B`
+});
 </script>
 <style scoped>
 .or-section::before,

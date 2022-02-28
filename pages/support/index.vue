@@ -178,4 +178,7 @@ const unreadMessages = (ticket) => {
     (m) => !m.read && m.user_id !== userStore.user.id
   ).length;
 };
+useMeta({
+  title: `Support - Retwisst B2B`
+});
 </script>

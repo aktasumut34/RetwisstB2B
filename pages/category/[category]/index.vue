@@ -302,6 +302,7 @@ interface Product {
 interface ProductCategoryResponse {
   products?: Product[];
   total?: number;
+  categoryDescriptions?: any[];
 }
 interface Filter {
   [key: string]: string[];
@@ -339,6 +340,11 @@ let { data }: { data: Ref<ProductCategoryResponse> } = await useAsyncData(
   'category' + category,
   fetchProducts
 );
+useMeta({
+  title: `${
+    data.value.categoryDescriptions[0]?.name || 'Category'
+  } - Retwisst B2B`
+});
 let loadImage = async (src: string): Promise<string> =>
   new Promise((resolve, reject) => {
     const img = new Image();

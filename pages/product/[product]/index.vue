@@ -448,6 +448,9 @@ const addToCart = async () => {
     loadingAddToCart.value = false;
   }
 };
+useMeta({
+  title: `${product.ProductDescriptions[0]?.name || 'Product'} - Retwisst B2B`
+});
 </script>
 
 <style>

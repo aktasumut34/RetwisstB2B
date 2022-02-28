@@ -550,4 +550,7 @@ const percentage = computed((): number => {
     return acc + (1 / item.Variant.boxPerPallet) * item.quantity * 100;
   }, 0);
 });
+useMeta({
+  title: `Checkout - Retwisst B2B`
+});
 </script>

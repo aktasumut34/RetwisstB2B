@@ -209,6 +209,10 @@ const kdown = (e: KeyboardEvent) => {
 const humanReadable = (date: string) => {
   return dayjs(date).fromNow();
 };
+
+useMeta({
+  title: `${ticket.value.subject} - Support - Retwisst B2B`
+});
 </script>
 
 <style>

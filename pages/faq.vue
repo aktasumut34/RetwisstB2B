@@ -121,4 +121,7 @@ const qaFiltered = computed(() => {
     );
   });
 });
+useMeta({
+  title: `FAQ - Retwisst B2B`
+});
 </script>

@@ -7,4 +7,7 @@
 <script setup lang="ts">
 import { useUserStore } from '~~/store';
 const userStore = useUserStore();
+useMeta({
+  title: `Home - Retwisst B2B`
+});
 </script>
