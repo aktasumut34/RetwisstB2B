@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between gap-4 lg:gap-6">
         <NuxtLink
           to="/support"
-          class="flex items-center gap-1 rounded-md bg-slate-700 px-4 py-1 text-white transition-colors hover:bg-slate-800 active:bg-slate-900"
+          class="flex h-8 w-8 items-center justify-center gap-1 rounded-sm bg-slate-700 text-white transition-colors hover:bg-slate-800 active:bg-slate-900"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4"
@@ -18,10 +18,8 @@
               stroke-linejoin="round"
               stroke-width="2"
               d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          <span>Back</span>
-        </NuxtLink>
+            /></svg
+        ></NuxtLink>
         <span class="text-2xl text-slate-700"
           >{{ ticket.subject
           }}<span class="pl-2 text-sm text-slate-500"

@@ -2,7 +2,7 @@
   <div v-if="user?.token">
     <AuthHead></AuthHead>
     <div
-      class="mt-4 grid grid-cols-1 gap-14 px-1 lg:grid-cols-2 lg:px-8"
+      class="grid grid-cols-1 gap-14 lg:grid-cols-2"
       v-if="user?.user?.CartItems?.length > 0"
     >
       <div class="flex flex-col gap-6">
@@ -84,14 +84,7 @@
         </div>
         <div class="flex justify-between">
           <span class="text-2xl text-slate-700">SUBTOTAL</span>
-          <span class="text-2xl text-slate-700"
-            >${{
-              user.user.CartItems.reduce(
-                (prev, cur) => prev + cur.quantity * cur.Variant.price,
-                0
-              ).toFixed(2)
-            }}</span
-          >
+          <span class="text-2xl text-slate-700">${{ cartTotal }}</span>
         </div>
       </div>
       <div class="flex flex-col gap-6">
@@ -241,13 +234,10 @@
                   v-for="address in user.user?.Addresses || []"
                   :key="address.name"
                   :value="address.id"
-                  v-slot="{ active, checked }"
+                  v-slot="{ checked }"
                 >
                   <div
                     :class="[
-                      active
-                        ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300'
-                        : '',
                       checked
                         ? 'bg-sky-900 bg-opacity-75 text-white '
                         : 'bg-white '
@@ -339,14 +329,11 @@
                   as="template"
                   v-for="method in shippingMethods || []"
                   :key="method.name"
-                  :value="method.id"
-                  v-slot="{ active, checked }"
+                  :value="method"
+                  v-slot="{ checked }"
                 >
                   <div
                     :class="[
-                      active
-                        ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300'
-                        : '',
                       checked
                         ? 'bg-blue-700 bg-opacity-75 text-white '
                         : 'bg-white '
@@ -358,13 +345,17 @@
                         <div class="text-sm">
                           <RadioGroupLabel as="p" class="font-medium">
                             <span
-                              class="mr-2 text-xl"
+                              class="text-xl"
                               :class="checked ? 'text-white' : 'text-gray-900'"
                               >{{ method.acronym }}</span
                             >
+                          </RadioGroupLabel>
+                          <RadioGroupLabel as="p" class="mb-2 font-medium">
                             <span
-                              class="text-md"
-                              :class="checked ? 'text-white' : 'text-gray-900'"
+                              class="mr-2 text-sm"
+                              :class="
+                                checked ? 'text-slate-100' : 'text-gray-700'
+                              "
                               >{{ method.name }}</span
                             >
                           </RadioGroupLabel>
@@ -377,29 +368,66 @@
                           </RadioGroupDescription>
                         </div>
                       </div>
-                      <div v-show="checked" class="flex-shrink-0 text-white">
-                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="12"
-                            fill="#fff"
-                            fill-opacity="0.2"
-                          />
-                          <path
-                            d="M7 13l3 3 7-7"
-                            stroke="#fff"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
+                    </div>
+                    <div
+                      class="absolute right-3 top-3 h-6 w-6 flex-shrink-0 text-white"
+                    >
+                      <svg
+                        v-if="checked"
+                        class="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="12"
+                          fill="#fff"
+                          fill-opacity="0.2"
+                        />
+                        <path
+                          d="M7 13l3 3 7-7"
+                          stroke="#fff"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </div>
                   </div>
                 </RadioGroupOption>
               </div>
             </RadioGroup>
+          </div>
+        </div>
+        <div class="col-span-1 flex flex-col gap-6 lg:col-span-2">
+          <div class="flex">
+            <span
+              class="block w-full border-b border-slate-300 text-3xl font-thin"
+              >CONFIRM YOUR ORDER</span
+            >
+          </div>
+          <div class="flex">
+            <button
+              class="flex items-center gap-1 rounded-md bg-retwisst-green-darkest px-8 py-2 uppercase text-white transition-colors hover:bg-retwisst-green-dark active:bg-retwisst-green-normal"
+              @click="setOpenCheckoutSummary(true)"
+            >
+              <span>Confirm</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </template>
@@ -482,12 +510,132 @@
       :address="addressProp"
       type="Create"
     ></ElementsNewaddress>
+    <TransitionRoot appear :show="isOpenCheckoutSummary" as="div">
+      <Dialog as="div">
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div class="min-h-screen px-4 text-center">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0"
+              enter-to="opacity-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100"
+              leave-to="opacity-0"
+            >
+              <DialogOverlay
+                class="fixed inset-0 bg-black bg-opacity-70"
+                @click="setOpenCheckoutSummary(false)"
+              />
+            </TransitionChild>
+
+            <span class="inline-block h-screen align-middle" aria-hidden="true">
+              &#8203;
+            </span>
+
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
+            >
+              <div
+                class="my-8 inline-flex max-h-[75vh] w-full max-w-3xl transform flex-col gap-6 overflow-hidden overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <DialogTitle
+                  as="h3"
+                  class="text-center text-2xl font-medium uppercase leading-6 text-slate-700"
+                >
+                  Order Summary
+                </DialogTitle>
+                <div class="grid grid-cols-1 gap-12 sm:grid-cols-3">
+                  <div class="flex flex-col gap-2">
+                    <div class="text-center">
+                      <span class="text-lg text-slate-800">DELIVERY</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Delivery Address</span
+                      >
+                      <span>{{ deliveryAddress.name }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Delivery Method</span
+                      >
+                      <span
+                        >{{ selectedMethod.acronym }} ({{
+                          selectedMethod.name
+                        }})</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <div class="text-center">
+                      <span class="text-lg text-slate-800">PACKAGING</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Full Pallet Count</span
+                      >
+                      <span>{{ Math.floor(percentage / 100) }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Additional Pallet</span
+                      >
+                      <span>{{ (percentage % 100).toFixed(2) }}% Filled</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <div class="text-center">
+                      <span class="text-lg text-slate-800">PRICING</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Order Total</span
+                      >
+                      <span>$ {{ cartTotal }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-center">
+                      <span class="text-sm uppercase text-slate-500"
+                        >Shipping Cost</span
+                      >
+                      <span>Not Clear Yet</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-center">
+                  <button
+                    class="flex items-center gap-1 rounded-md bg-retwisst-green-darkest px-8 py-2 uppercase text-white transition-colors hover:bg-retwisst-green-dark active:bg-retwisst-green-normal"
+                    @click="checkout"
+                  >
+                    ACCEPT
+                  </button>
+                </div>
+              </div>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useUserStore } from '~~/store';
 import { debounce } from 'vue-debounce';
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogOverlay,
+  DialogTitle
+} from '@headlessui/vue';
+import { singleButtonSwal } from '~~/utils/swal';
 import {
   RadioGroup,
   RadioGroupDescription,
@@ -497,9 +645,8 @@ import {
 import { Ref } from 'nuxt3/dist/app/compat/capi';
 
 const user = useUserStore();
-const selectedAddress = ref(
-  user.user?.Addresses?.length ? user.user.Addresses[0].id : -1
-);
+const router = useRouter();
+const selectedAddress = ref(user.user.Addresses[0].id);
 const {
   data
 }: { data: Ref<{ shippingMethods?: [{ [key: string]: string }] }> } =
@@ -515,7 +662,7 @@ const {
       })
   );
 const shippingMethods = data.value.shippingMethods || [];
-const selectedMethod = ref(shippingMethods[0].id);
+const selectedMethod = ref(shippingMethods[0]);
 const updateCartItemQuantity = debounce(
   async (id: number, quantity: number) => {
     await user.updateCartItemQuantity(id, quantity);
@@ -550,6 +697,45 @@ const percentage = computed((): number => {
     return acc + (1 / item.Variant.boxPerPallet) * item.quantity * 100;
   }, 0);
 });
+
+const isOpenCheckoutSummary = ref(false);
+const setOpenCheckoutSummary = (v: boolean) => {
+  isOpenCheckoutSummary.value = v;
+};
+
+const cartTotal = computed(() => {
+  return user.user.CartItems.reduce(
+    (prev, cur) => prev + cur.quantity * cur.Variant.price,
+    0
+  ).toFixed(2);
+});
+
+const deliveryAddress = computed(() => {
+  return user.user.Addresses.find((a) => a.id === selectedAddress.value);
+});
+
+const checkout = async (): Promise<void> => {
+  const answer: { success?: boolean; order?: { [key: string]: string } } =
+    await user.checkout(selectedAddress.value, selectedMethod.value.id);
+  if (answer.success) {
+    singleButtonSwal
+      .fire({
+        title: 'Order Placed',
+        text: 'Your order has been placed',
+        icon: 'success'
+      })
+      .then(() => {
+        router.push('/orders');
+      });
+  } else {
+    singleButtonSwal.fire({
+      title: 'Order Failed',
+      text: 'Your order failed to place',
+      icon: 'error'
+    });
+  }
+};
+
 useMeta({
   title: `Checkout - Retwisst B2B`
 });

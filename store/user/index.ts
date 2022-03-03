@@ -207,6 +207,26 @@ export default defineStore('user', {
       await this.syncUser();
       return answer;
     },
+    async checkout(address_id, shipping_method_id) {
+      const answer = await $fetch('http://localhost:3100/api/order/create', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        },
+        body: {
+          address_id,
+          shipping_method_id,
+          items: this.user.CartItems.map((item) => {
+            return {
+              variant_id: item.Variant.id,
+              quantity: item.quantity,
+              unitPrice: item.Variant.price
+            };
+          })
+        }
+      });
+      return answer;
+    },
     async logout() {
       try {
         const response = await fetch('http://localhost:3100/api/auth/logout', {

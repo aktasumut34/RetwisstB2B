@@ -137,7 +137,7 @@
           <span class="flex-1 text-xl">ORDERS</span>
           <div class="flex flex-col gap-2">
             <NuxtLink
-              to="/profile"
+              to="/orders"
               class="flex justify-between rounded-md bg-white px-4 py-2"
             >
               My Orders

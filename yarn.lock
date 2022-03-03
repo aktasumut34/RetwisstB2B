@@ -4497,6 +4497,16 @@ pretty-time@^1.1.0:
   resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
   integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
+primeicons@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
+  integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
+
+primevue@^3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/primevue/-/primevue-3.12.0.tgz#22812a1cb6b8770a680c245a65e56552ee9f8ee8"
+  integrity sha512-vwYoaJVKqbLWGIOKoDbbgLijyllXw69wiPXGW1DNXVBtWo3d0ko4H7CjikRGVDuq5OtDO13p/mTOW26EnlPfUQ==
+
 printj@~1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/printj/-/printj-1.3.1.tgz#9af6b1d55647a1587ac44f4c1654a4b95b8e12cb"
@@ -5534,7 +5544,14 @@ vue3-carousel@^0.1.36:
   resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.1.36.tgz#494f06cf08dd1632f534bfee5ee5785b33bc5ac8"
   integrity sha512-e1wDM9wmzy+hFrBaoJXXRTmsiZ1Q71p646MgZ75qC3NlymbigYwqlKewj0cNWslC0Q9gXEieIwIbNJO71Ydesw==
 
-vue@^3.1.1, vue@^3.2.31:
+vue3-print-nb@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vue3-print-nb/-/vue3-print-nb-0.1.4.tgz#11ee3ef8857c34b403fb782da722e82ab7e20952"
+  integrity sha512-LExI7viEzplR6ZKQ2b+V4U0cwGYbVD4fut/XHvk3UPGlT5CcvIGs6VlwGp107aKgk6P8Pgx4rco3Rehv2lti3A==
+  dependencies:
+    vue "^3.0.5"
+
+vue@^3.0.5, vue@^3.1.1, vue@^3.2.31:
   version "3.2.31"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.31.tgz#e0c49924335e9f188352816788a4cca10f817ce6"
   integrity sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw==

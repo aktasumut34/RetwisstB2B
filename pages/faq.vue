@@ -1,7 +1,7 @@
 <template>
   <div v-if="userStore?.token">
     <AuthHead></AuthHead>
-    <div class="mt-4 flex items-center justify-between">
+    <div class="flex items-center justify-between">
       <span class="block w-full text-4xl">FAQ</span>
       <input
         type="text"
@@ -111,7 +111,7 @@ let { data }: { data: Ref<{ qa?: [{ question?: string; answer?: string }] }> } =
       }
     })
   );
-const qa = data.value.qa || [];
+const qa = data.value.qa;
 const qaFiltered = computed(() => {
   const qv = query.value.toLowerCase();
   return qa.filter((q) => {

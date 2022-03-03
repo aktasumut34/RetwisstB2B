@@ -25,7 +25,7 @@
             >
               <img
                 :src="curImg"
-                class="w-full origin-top-left"
+                class="w-full origin-top-left object-contain"
                 :style="{
                   transform: `translate(-${mousePos.X}px,-${mousePos.Y}px) scale(${mousePos.scale})`
                 }"
@@ -46,6 +46,7 @@
                   <div class="carousel__item">
                     <img
                       :src="image.image"
+                      class="object-contain"
                       :class="{ active: curImg === image.image }"
                     />
                   </div>
@@ -62,6 +63,7 @@
                 >
                   <img
                     :src="image.image"
+                    class="object-cover"
                     @click="setLightboxVisible(true, k)"
                   /></div
               ></template>
@@ -150,11 +152,10 @@
           </div>
           <div class="mt-4 flex flex-col gap-2">
             <span class="text-xs text-slate-400">Quantity</span>
-            <div class="max-w-[140px]">
+            <div class="max-w-[200px]">
               <vue-number-input
                 :model-value="quantity"
                 :min="1"
-                :inputtable="false"
                 @update:model-value="updateQuantity"
                 controls
                 center
@@ -227,8 +228,8 @@
       <lightbox
         :visible="lightBoxVisible"
         :imgs="imgsToShow.map((image) => image.image)"
-        @hide="setLightboxVisible(false, 0)"
         :index="lightBoxIndex"
+        @hide="setLightboxVisible(false, 0)"
       ></lightbox>
     </template>
   </div>
@@ -244,7 +245,13 @@ const lightBoxVisible = ref(false);
 const lightBoxIndex = ref(0);
 const quantity = ref(1);
 const updateQuantity = (newValue, oldValue) => {
-  quantity.value = newValue;
+  if (Number.isNaN(newValue) || newValue < 1) {
+    const input = <HTMLInputElement>(
+      document.querySelector('.vue-number-input__button--plus')
+    );
+    input.click();
+    input.valueAsNumber = 1;
+  } else quantity.value = newValue;
 };
 interface Product {
   id: number;

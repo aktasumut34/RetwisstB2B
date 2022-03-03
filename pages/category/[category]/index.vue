@@ -374,7 +374,7 @@ const setTotalPages = (total: number) => {
 };
 
 const products: Ref<Product[]> = ref([]);
-const loadingProducts = ref(true);
+const loadingProducts = ref(false);
 const pages = ref(0);
 fillWithProducts(data.value.products);
 setTotalPages(data.value.total);

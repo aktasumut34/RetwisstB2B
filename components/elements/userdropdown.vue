@@ -55,7 +55,7 @@
           </div>
           <MenuItem v-slot="{ active }">
             <NuxtLink
-              to="/profile"
+              to="/orders"
               class="rounded-sm"
               :class="[
                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',

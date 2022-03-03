@@ -2,7 +2,7 @@
   <div v-if="userStore?.token">
     <AuthHead></AuthHead>
     <div class="flex flex-col divide-y">
-      <div class="flex flex-col gap-4 py-8 px-2">
+      <div class="flex flex-col gap-4 py-8">
         <div class="flex items-center gap-4 lg:gap-6">
           <span class="text-2xl uppercase text-slate-700">Addresses</span>
           <button
@@ -92,7 +92,7 @@
           Sorry, you don't have any addresses. Please add one to continue.
         </div>
       </div>
-      <div class="flex flex-col gap-4 py-8 px-2">
+      <div class="flex flex-col gap-4 py-8">
         <div class="flex items-center gap-4 lg:gap-6">
           <span class="text-2xl uppercase text-slate-700">Phone Numbers</span>
           <button
