@@ -1,7 +1,5 @@
 <template>
-  <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
-  </div>
+  <div v-if="userStore?.token">Selamm</div>
 </template>
 
 <script setup lang="ts">

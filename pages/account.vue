@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <div class="flex flex-col divide-y">
       <div class="flex flex-col gap-4 py-8">
         <div class="flex items-center gap-4 lg:gap-6">

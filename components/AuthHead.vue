@@ -52,7 +52,7 @@
           <ElementsUserdropdown class="z-[9996] hidden sm:inline-block" />
         </div>
       </div>
-      <div class="hidden items-center justify-between px-0 lg:flex xl:px-8">
+      <div class="hidden items-center justify-between gap-12 lg:flex">
         <ElementsCategorylink
           v-for="category in categories"
           :key="category.id"

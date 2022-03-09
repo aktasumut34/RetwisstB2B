@@ -1,11 +1,10 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
-    <div class="flex flex-col gap-6" id="printable">
+    <div class="flex flex-1 flex-col gap-6" id="printable">
       <div class="flex items-center justify-between gap-4 lg:gap-6">
         <NuxtLink
           to="/orders"
-          class="flex h-8 w-8 items-center justify-center gap-1 rounded-sm bg-slate-700 text-white transition-colors hover:bg-slate-800 active:bg-slate-900"
+          class="no-print flex h-8 w-8 items-center justify-center gap-1 rounded-sm bg-slate-700 text-white transition-colors hover:bg-slate-800 active:bg-slate-900"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4"
@@ -109,7 +108,7 @@
         </div>
       </div>
       <div
-        class="grid grid-cols-1 gap-12 divide-x-0 xl:grid-cols-2 xl:gap-0 xl:divide-x"
+        class="grid flex-1 grid-cols-1 gap-12 divide-x-0 xl:grid-cols-2 xl:gap-0 xl:divide-x"
       >
         <div class="flex flex-col gap-2 px-3">
           <div class="text-xl font-light text-slate-700">PRODUCTS</div>
@@ -123,7 +122,7 @@
               >
                 <img :src="cartItem.Variant.Images[0].image" class="max-h-20" />
               </div>
-              <div class="col-span-6 flex flex-col sm:col-span-4">
+              <div class="col-span-4 flex flex-col">
                 <span>{{
                   cartItem.Variant.Product.ProductDescriptions[0].name
                 }}</span>
@@ -142,21 +141,43 @@
                 </span>
               </div>
               <div class="col-span-2 flex flex-col items-center justify-center">
-                <span class="text-sm font-light text-slate-600">Qty.</span>
+                <span class="text-center text-sm font-light text-slate-600"
+                  >Qty.</span
+                >
                 <span class="text-lg font-semibold text-slate-700">{{
                   cartItem.quantity
                 }}</span>
+                <span class="text-center text-xs font-extralight text-slate-700"
+                  >({{
+                    cartItem.quantity * cartItem.Variant.productPerBox
+                  }}
+                  pcs.)</span
+                >
               </div>
-              <div class="col-span-2 flex flex-col items-center justify-center">
-                <span class="text-sm font-light text-slate-600"
-                  >Unit Price</span
+              <div
+                class="col-span-3 flex flex-col items-center justify-center sm:col-span-2"
+              >
+                <span class="text-center text-sm font-light text-slate-600">
+                  Price</span
                 >
                 <span
                   class="whitespace-nowrap text-lg font-semibold text-slate-700"
                   >$ {{ cartItem.Variant.price.toFixed(2) }}</span
                 >
+                <span
+                  class="whitespace-nowrap text-xs font-extralight text-slate-700"
+                  >($
+                  {{
+                    (
+                      cartItem.Variant.price / cartItem.Variant.productPerBox
+                    ).toFixed(2)
+                  }}
+                  per pc.)</span
+                >
               </div>
-              <div class="col-span-2 flex flex-col items-center justify-center">
+              <div
+                class="col-span-3 flex flex-col items-center justify-center sm:col-span-2"
+              >
                 <span class="text-sm font-light text-slate-600">Total</span>
                 <span
                   class="whitespace-nowrap text-lg font-semibold text-slate-700"
@@ -169,7 +190,10 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col gap-2 px-3">
+        <div
+          class="flex flex-col gap-2 px-3"
+          :class="{ 'no-print': history.length <= 0 }"
+        >
           <div class="text-xl font-light text-slate-700">
             ORDER STATUS HISTORY
           </div>
@@ -194,6 +218,7 @@
 <script lang="ts" setup>
 import { Ref } from 'nuxt3/dist/app/compat/vue-demi';
 import { useUserStore } from '~~/store';
+import Footer from '~~/components/Footer.vue';
 const userStore = useUserStore();
 const route = useRoute();
 const id = route.params.id;
@@ -289,6 +314,10 @@ useMeta({
 
 <style lang="scss">
 @media print {
+  // body {
+  //   color-adjust: exact;
+  //   -webkit-print-color-adjust: exact;
+  // }
   .no-print,
   .no-print * {
     display: none !important;

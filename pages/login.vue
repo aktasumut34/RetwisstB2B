@@ -158,12 +158,9 @@ const login = async () => {
         const { errors } = await response.json();
         email.value = '';
         password.value = '';
-        if (errors[0].type === 'password') {
-          whyNot.value = 'Password was incorrect';
-          dangers.value.push('password');
-        } else if (errors[0].type === 'email') {
-          whyNot.value = "User couldn't be found";
-          dangers.value.push('email');
+        if (errors[0].type && errors[0].message) {
+          whyNot.value = errors[0].message;
+          dangers.value.push(errors[0].type);
         } else throw new Error('Unknown error');
       }
     } catch (error) {
@@ -171,6 +168,9 @@ const login = async () => {
     }
   }
 };
+definePageMeta({
+  layout: false
+});
 useMeta({
   title: `Login - Retwisst B2B`
 });

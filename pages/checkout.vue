@@ -1,6 +1,5 @@
 <template>
   <div v-if="user?.token">
-    <AuthHead></AuthHead>
     <div
       class="grid grid-cols-1 gap-14 lg:grid-cols-2"
       v-if="user?.user?.CartItems?.length > 0"

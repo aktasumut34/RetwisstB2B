@@ -1,132 +1,153 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
-    <div class="flex flex-col gap-6">
+    <div v-if="orders.length" class="flex flex-col gap-6">
       <span class="block w-full border-b border-slate-300 text-3xl font-thin"
         >ORDERS
       </span>
-      <div class="flex flex-col">
-        <div class="flex">
-          <Datatable
-            :value="orders"
-            :auto-layout="true"
-            :paginator="true"
-            :rows="10"
-            v-model:filters="filters"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            :rowsPerPageOptions="[10, 25, 50]"
-            :row-hover="true"
-            selectionMode="single"
-            v-model:selection="selectedOrder"
-            class="p-datatable-customers"
-          >
-            <template #header>
-              <div class="flex items-center justify-between">
-                <h5 class="m-0 text-2xl">All Orders</h5>
-                <div class="flex items-center bg-white">
-                  <input
-                    type="text"
-                    v-model="filters['global'].value"
-                    placeholder="Keyword Search"
-                    class="text-md rounded-md px-4 py-2 text-slate-700 focus:outline-none"
-                  />
-                  <div class="mr-2 flex items-center justify-center">
-                    <i class="pi pi-search" />
-                  </div>
-                </div>
+      <Datatable
+        :value="orders"
+        :auto-layout="true"
+        :paginator="true"
+        :rows="10"
+        v-model:filters="filters"
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        :rowsPerPageOptions="[10, 25, 50]"
+        :row-hover="true"
+        selectionMode="single"
+        v-model:selection="selectedOrder"
+        class="p-datatable-customers"
+      >
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h5 class="m-0 text-2xl">All Orders</h5>
+            <div class="flex items-center bg-white">
+              <input
+                type="text"
+                v-model="filters['global'].value"
+                placeholder="Search"
+                class="text-md rounded-md px-4 py-2 text-slate-700 focus:outline-none"
+              />
+              <div class="mr-2 flex items-center justify-center">
+                <i class="pi pi-search" />
               </div>
-            </template>
-            <Column field="id" header="#NO" :sortable="true">
-              <template #body="{ data }">
-                <NuxtLink class="block" :to="`/orders/${data.id}`"
-                  ># {{ data.id }}
-                </NuxtLink></template
-              >
-            </Column>
-            <Column
-              field="ShippingAddress.name"
-              header="Address"
-              :sortable="true"
-            >
-              <template #body="{ data }">
-                <span>{{ data.ShippingAddress.name }}</span>
-              </template>
-            </Column>
-            <Column
-              field="ShippingMethod.acronym"
-              header="Method"
-              :sortable="true"
-            >
-              <template #body="{ data }">
-                <span>{{ data.ShippingMethod.acronym }}</span>
-              </template>
-            </Column>
-            <Column
-              header="Pallets"
-              class="table-cell md:hidden 2xl:table-cell"
-            >
-              <template #body="{ data }">
-                <div class="flex flex-col items-end lg:items-start">
-                  <span
-                    ><span class="font-bold">{{
-                      Math.floor(
-                        data.OrderItems.reduce((cur, it) => {
-                          return cur + it.quantity / it.Variant.boxPerPallet;
-                        }, 0)
-                      )
-                    }}</span>
-                    x Full Pallet</span
-                  ><span
-                    v-if="
-                      data.OrderItems.reduce((cur, it) => {
+            </div>
+          </div>
+        </template>
+        <Column field="id" header="#NO" :sortable="true">
+          <template #body="{ data }">
+            <NuxtLink class="block" :to="`/orders/${data.id}`"
+              ># {{ data.id }}
+            </NuxtLink></template
+          >
+        </Column>
+        <Column field="ShippingAddress.name" header="Address" :sortable="true">
+          <template #body="{ data }">
+            <span>{{ data.ShippingAddress.name }}</span>
+          </template>
+        </Column>
+        <Column field="ShippingMethod.acronym" header="Method" :sortable="true">
+          <template #body="{ data }">
+            <span>{{ data.ShippingMethod.acronym }}</span>
+          </template>
+        </Column>
+        <Column header="Pallets" class="table-cell md:hidden 2xl:table-cell">
+          <template #body="{ data }">
+            <div class="flex flex-col items-end lg:items-start">
+              <span
+                ><span class="font-bold">{{
+                  Math.floor(
+                    data.OrderItems.reduce((cur, it) => {
+                      return cur + it.quantity / it.Variant.boxPerPallet;
+                    }, 0)
+                  )
+                }}</span>
+                x Full Pallet</span
+              ><span
+                v-if="
+                  data.OrderItems.reduce((cur, it) => {
+                    return cur + it.quantity / it.Variant.boxPerPallet;
+                  }, 0) %
+                    1 >
+                  0
+                "
+                ><span class="font-bold"
+                  >1x
+                  {{
+                    (
+                      (data.OrderItems.reduce((cur, it) => {
                         return cur + it.quantity / it.Variant.boxPerPallet;
                       }, 0) %
-                        1 >
-                      0
-                    "
-                    ><span class="font-bold"
-                      >1x
-                      {{
-                        (
-                          (data.OrderItems.reduce((cur, it) => {
-                            return cur + it.quantity / it.Variant.boxPerPallet;
-                          }, 0) %
-                            1) *
-                          100
-                        ).toFixed(2)
-                      }}% Filled</span
-                    >
-                    Pallet</span
-                  >
-                </div>
-              </template>
-            </Column>
-            <Column field="OrderStatus.name" :sortable="true" header="Status">
-              <template #body="{ data }">
-                <span>{{ data.OrderStatus.name }}</span>
-              </template>
-            </Column>
-            <Column
-              field="createdAt"
-              header="Created"
-              :sortable="true"
-              class="table-cell md:hidden 2xl:table-cell"
-            >
-              <template #body="{ data }">
-                <span>{{ dayjs(data.createdAt).format('LLL') }}</span>
-              </template>
-            </Column>
-            <Column field="updatedAt" header="Last Action" :sortable="true">
-              <template #body="{ data }">
-                <span>{{ dayjs(data.updatedAt).format('LLL') }}</span>
-              </template>
-            </Column>
-            <Column field="totalPrice" header="Total" :sortable="true">
-              <template #body="{ data }"> $ {{ data.totalPrice }}</template>
-            </Column>
-          </Datatable>
-        </div>
+                        1) *
+                      100
+                    ).toFixed(2)
+                  }}% Filled</span
+                >
+                Pallet</span
+              >
+            </div>
+          </template>
+        </Column>
+        <Column field="OrderStatus.name" :sortable="true" header="Status">
+          <template #body="{ data }">
+            <span>{{ data.OrderStatus.name }}</span>
+          </template>
+        </Column>
+        <Column
+          field="createdAt"
+          header="Created"
+          :sortable="true"
+          class="table-cell md:hidden 2xl:table-cell"
+        >
+          <template #body="{ data }">
+            <span>{{ dayjs(data.createdAt).format('LLL') }}</span>
+          </template>
+        </Column>
+        <Column field="updatedAt" header="Last Action" :sortable="true">
+          <template #body="{ data }">
+            <span>{{ dayjs(data.updatedAt).format('LLL') }}</span>
+          </template>
+        </Column>
+        <Column field="totalPrice" header="Total" :sortable="true">
+          <template #body="{ data }">
+            $ {{ data.totalPrice.toFixed(2) }}</template
+          >
+        </Column>
+      </Datatable>
+    </div>
+    <div
+      v-else
+      class="mt-8 flex w-full flex-col items-center justify-center gap-8"
+    >
+      <div>
+        <img src="/empty-cart.png" class="w-[250px]" />
+      </div>
+      <div class="text-center">
+        <span class="text-center text-xl text-slate-700 md:text-2xl xl:text-3xl"
+          >YOU DON'T HAVE ANY ORDERS YET!</span
+        >
+      </div>
+      <div class="text-center">
+        <NuxtLink
+          to="/"
+          class="flex items-center justify-center gap-2 rounded-md bg-retwisst-green-darkest py-2 px-8 text-sm font-light text-white shadow-sm transition-colors hover:bg-retwisst-green-dark active:bg-retwisst-green-normal"
+        >
+          <span class="font-bold uppercase">Continue Shopping</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </NuxtLink>
       </div>
     </div>
   </div>

@@ -346,7 +346,9 @@ const verifyPhone = async () => {
   }
   phoneLoading.value = false;
 };
-
+definePageMeta({
+  layout: false
+});
 useMeta({
   title: `Register - Retwisst B2B`
 });

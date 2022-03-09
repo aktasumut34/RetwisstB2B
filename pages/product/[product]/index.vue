@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <template v-if="loadingProduct">
       <div
         class="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] items-center justify-center"
@@ -25,7 +24,7 @@
             >
               <img
                 :src="curImg"
-                class="w-full origin-top-left object-contain"
+                class="max-h-[65vh] w-full origin-top-left object-contain"
                 :style="{
                   transform: `translate(-${mousePos.X}px,-${mousePos.Y}px) scale(${mousePos.scale})`
                 }"
@@ -79,19 +78,34 @@
           <span
             v-if="!validVariant"
             class="text-lg font-extralight text-slate-600"
-            >${{ priceRange.min.toFixed(2) }} ~ ${{ priceRange.max.toFixed(2) }}
+          >
+            <span v-if="priceRange.min !== priceRange.max"
+              >${{ priceRange.min.toFixed(2) }} ~ ${{
+                priceRange.max.toFixed(2)
+              }}</span
+            >
+            <span v-else>${{ priceRange.min.toFixed(2) }}</span>
             / package
           </span>
-          <span v-else class="text-lg font-extralight text-slate-600"
-            >${{ validVariant.price.toFixed(2) }} /
-            <span class="text-sm text-slate-600"
-              >package ( {{ validVariant.productPerBox }} x ~ ${{
-                (validVariant.price / validVariant.productPerBox).toFixed(2)
-              }}
-              / piece )</span
-            ></span
+          <span
+            v-else
+            class="flex flex-col gap-2 text-lg font-extralight text-slate-600"
           >
-          <div class="mt-8 flex flex-col gap-4">
+            <span
+              >${{ validVariant.price.toFixed(2) }} / package
+              <span class="text-sm text-slate-600">
+                ( {{ validVariant.productPerBox }} x ~ ${{
+                  (validVariant.price / validVariant.productPerBox).toFixed(2)
+                }}
+                / piece )</span
+              ></span
+            >
+            <span class="flex gap-1"
+              ><span class="font-extralight">Selected Model:</span>
+              <span class="font-semibold">{{ validVariant.model }}</span></span
+            >
+          </span>
+          <div class="mt-4 flex flex-col gap-4">
             <div v-for="filter in Object.keys(options)">
               <span class="text-xs text-slate-400">{{ filter }}</span>
               <v-multiselect
@@ -185,9 +199,15 @@
                 <div
                   class="flex flex-col text-lg font-extralight text-slate-600"
                 >
-                  <span class="text-center" v-if="!validVariant"
-                    >{{ productPerBoxRange.min }} ~
-                    {{ productPerBoxRange.max }}</span
+                  <span class="text-center" v-if="!validVariant">
+                    <template
+                      v-if="productPerBoxRange.min !== productPerBoxRange.max"
+                      >{{ productPerBoxRange.min }} ~
+                      {{ productPerBoxRange.max }}</template
+                    >
+                    <template v-else>{{
+                      productPerBoxRange.min
+                    }}</template></span
                   >
                   <span class="text-center" v-else>{{
                     validVariant.productPerBox
@@ -201,9 +221,16 @@
                   class="flex flex-col justify-center text-lg font-extralight text-slate-600"
                 >
                   <span class="text-center" v-if="!validVariant"
-                    >{{ boxPerPalletRange.min }} ~
-                    {{ boxPerPalletRange.max }}</span
-                  >
+                    ><template
+                      v-if="boxPerPalletRange.min !== boxPerPalletRange.max"
+                    >
+                      {{ boxPerPalletRange.min }} ~
+                      {{ boxPerPalletRange.max }}
+                    </template>
+                    <template v-else>
+                      {{ boxPerPalletRange.min }}
+                    </template>
+                  </span>
                   <span class="text-center" v-else>{{
                     validVariant.boxPerPallet
                   }}</span>
@@ -285,6 +312,7 @@ let {
     productOptionValues?: [
       {
         id: number;
+        model: string;
         boxPerPallet: number;
         productPerBox: number;
         price: number;

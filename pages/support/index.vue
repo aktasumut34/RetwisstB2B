@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <div class="flex flex-col gap-4 py-4">
       <div class="flex items-center gap-4 lg:gap-6">
         <span class="text-2xl uppercase text-slate-700">Tickets</span>

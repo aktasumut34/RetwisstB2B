@@ -45,6 +45,8 @@ export default defineStore('user', {
           const { user } = await userResponse.json();
           this.setUser(user);
           return user;
+        } else {
+          this.logout();
         }
       } catch (e) {}
     },

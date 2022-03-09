@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <div class="flex flex-col items-center gap-4 pb-4 md:flex-row md:pb-6">
       <button
         class="flex items-center justify-center gap-1 rounded-lg border border-slate-300 px-2 py-2 text-slate-700 shadow-sm transition-colors hover:bg-slate-100 active:bg-slate-200 sm:px-4"
@@ -85,7 +84,7 @@
     <template v-if="!loadingProducts">
       <div class="flex flex-col gap-8">
         <div
-          class="grid grid-cols-1 gap-y-6 gap-x-2 sm:grid-cols-2 sm:gap-y-8 md:grid-cols-3 md:gap-y-10 xl:grid-cols-4 xl:gap-y-12"
+          class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
         >
           <ProductCard
             v-for="product in products"
@@ -99,6 +98,7 @@
         </div>
         <div
           class="mb-12 flex w-full flex-wrap items-center justify-center gap-2"
+          v-if="pages > 1"
         >
           <span
             v-for="p in pages"

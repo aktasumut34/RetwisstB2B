@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <div class="flex items-center justify-between">
       <span class="block w-full text-4xl">FAQ</span>
       <input

@@ -38,21 +38,21 @@
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
               >
-                {{ props.type }} New Address
+                Create New Category
               </DialogTitle>
               <div class="mt-4 flex flex-col gap-4">
                 <div class="group relative">
                   <input
                     type="text"
                     class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.name"
+                    v-model="props.category.name"
                   />
 
                   <span
                     class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
                     :class="{
                       '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.name.length > 0
+                        props.category.name.length > 0
                     }"
                     >Name</span
                   >
@@ -61,80 +61,33 @@
                   <input
                     type="text"
                     class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.street"
+                    v-model="props.category.slug"
                   />
 
                   <span
                     class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
                     :class="{
                       '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.street.length > 0
+                        props.category.slug.length > 0
                     }"
-                    >Street</span
+                    >Slug</span
                   >
                 </div>
                 <div class="group relative">
-                  <input
+                  <textarea
                     type="text"
-                    class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.zip"
-                  />
+                    class="relative w-full resize-none rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+                    v-model="props.category.description"
+                    rows="6"
+                  ></textarea>
 
                   <span
                     class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
                     :class="{
                       '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.zip.length > 0
+                        props.category.description.length > 0
                     }"
-                    >Zip Code</span
-                  >
-                </div>
-                <div class="group relative">
-                  <input
-                    type="text"
-                    class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.city"
-                  />
-
-                  <span
-                    class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
-                    :class="{
-                      '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.city.length > 0
-                    }"
-                    >City</span
-                  >
-                </div>
-                <div class="group relative">
-                  <input
-                    type="text"
-                    class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.state"
-                  />
-
-                  <span
-                    class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
-                    :class="{
-                      '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.state.length > 0
-                    }"
-                    >State</span
-                  >
-                </div>
-                <div class="group relative">
-                  <input
-                    type="text"
-                    class="relative w-full rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
-                    v-model="props.address.country"
-                  />
-
-                  <span
-                    class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
-                    :class="{
-                      '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
-                        props.address.country.length > 0
-                    }"
-                    >Country</span
+                    >Description</span
                   >
                 </div>
               </div>
@@ -179,40 +132,41 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  type: {
-    type: String,
-    default: 'Add'
-  },
-  address: {
+  category: {
     type: Object,
     default: () => ({
       name: '',
-      street: '',
-      zip: '',
-      city: '',
-      state: '',
-      country: '',
-      id: -1
+      slug: '',
+      description: ''
     })
   }
 });
-const emits = defineEmits(['cls']);
+const emits = defineEmits(['cls', 'success']);
 const cls = () => {
   emits('cls');
 };
 const save = async () => {
-  const ans: { success?: boolean } = await user.updateOrCreateAddress(
-    props.address
+  const ans: { success?: boolean } = await $fetch(
+    'http://localhost:3100/api/admin/categories/create',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`
+      },
+      body: {
+        name: props.category.name,
+        slug: props.category.slug,
+        description: props.category.description
+      }
+    }
   );
   if (ans.success === true) {
+    emits('success');
     emits('cls');
     singleButtonSwal.fire(
       'Success!',
-      `Your address has been ${
-        props.address.id === -1 || props.address.id === ''
-          ? 'created.'
-          : 'updated.'
-      }`,
+      `New category has been created.`,
       'success'
     );
   } else singleButtonSwal.fire('Error!', 'Something went wrong.', 'error');

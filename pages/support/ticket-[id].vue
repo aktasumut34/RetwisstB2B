@@ -1,6 +1,5 @@
 <template>
   <div v-if="userStore?.token">
-    <AuthHead></AuthHead>
     <div class="flex flex-col gap-4 py-4 px-2">
       <div class="flex items-center justify-between gap-4 lg:gap-6">
         <NuxtLink
