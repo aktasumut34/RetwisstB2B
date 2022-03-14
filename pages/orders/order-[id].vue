@@ -162,14 +162,14 @@
                 >
                 <span
                   class="whitespace-nowrap text-lg font-semibold text-slate-700"
-                  >$ {{ cartItem.Variant.price.toFixed(2) }}</span
+                  >$ {{ cartItem.unitPrice.toFixed(2) }}</span
                 >
                 <span
                   class="whitespace-nowrap text-xs font-extralight text-slate-700"
                   >($
                   {{
                     (
-                      cartItem.Variant.price / cartItem.Variant.productPerBox
+                      cartItem.unitPrice / cartItem.Variant.productPerBox
                     ).toFixed(2)
                   }}
                   per pc.)</span
@@ -183,7 +183,7 @@
                   class="whitespace-nowrap text-lg font-semibold text-slate-700"
                   >$
                   {{
-                    (cartItem.Variant.price * cartItem.quantity).toFixed(2)
+                    (cartItem.unitPrice * cartItem.quantity).toFixed(2)
                   }}</span
                 >
               </div>
@@ -197,7 +197,32 @@
           <div class="text-xl font-light text-slate-700">
             ORDER STATUS HISTORY
           </div>
-          <div class="flex flex-col divide-y" v-if="history.length > 0"></div>
+          <div class="flex flex-col gap-4" v-if="history.length > 0">
+            <div
+              class="flex items-center gap-12 rounded-md px-4 py-2 text-white shadow-md"
+              :style="{
+                backgroundColor: getStatusBackgroundColor(h.OrderStatus.type)
+              }"
+              v-for="(h, index) in history"
+            >
+              <div class="text-2xl">#{{ history.length - index }}</div>
+              <div class="flex flex-1 flex-col gap-2">
+                <div class="flex items-center justify-between">
+                  <div>{{ h.description }}</div>
+                  <div class="text-xs text-slate-100">
+                    {{ dayjs(h.createdAt).format('LLL') }}
+                  </div>
+                </div>
+                <div class="text-sm">
+                  <i
+                    class="no-print !text-sm opacity-90"
+                    :class="'pi pi-' + getStatusIcon(h.OrderStatus.type)"
+                  />
+                  {{ h.OrderStatus.name }}
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             class="flex flex-col rounded-lg bg-slate-700 px-4 py-4 text-slate-100"
             v-else
@@ -218,7 +243,10 @@
 <script lang="ts" setup>
 import { Ref } from 'nuxt3/dist/app/compat/vue-demi';
 import { useUserStore } from '~~/store';
-import Footer from '~~/components/Footer.vue';
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(LocalizedFormat);
 const userStore = useUserStore();
 const route = useRoute();
 const id = route.params.id;
@@ -239,15 +267,36 @@ const {
             boxPerPallet: number;
             productPerBox: number;
           };
+          unitPrice: number;
           quantity: number;
         }
       ];
-      OrderStatus?: { [key: string]: string };
-      OrderStatusHistories?: [{ [key: string]: string }];
+      OrderStatus?: {
+        OrderStatus: { name: string; id: number };
+        createdAt: string;
+        type: string;
+        description: string;
+        name: string;
+      };
+      OrderStatusHistories?: [
+        {
+          OrderStatus?: {
+            OrderStatus: { name: string; id: number };
+            createdAt: string;
+            type: string;
+            description: string;
+            name: string;
+          };
+          description: string;
+          createdAt: string;
+          name: string;
+        }
+      ];
       ShippingAddress?: { [key: string]: string };
       ShippingMethod?: { [key: string]: string };
       totalPrice?: number;
       status?: string;
+      createdAt: string;
     };
     success?: boolean;
   }>;
@@ -318,6 +367,9 @@ useMeta({
   //   color-adjust: exact;
   //   -webkit-print-color-adjust: exact;
   // }
+  .p-paginator {
+    display: none !important;
+  }
   .no-print,
   .no-print * {
     display: none !important;

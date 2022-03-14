@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="mainContent flex flex-1 flex-col">
+    <AdminNewcategory
+      :isOpen="isOpenCategoryCreate"
+      @cls="setIsOpenCategoryCreate(false)"
+      @success="refreshCategories"
+      :category="categoryProp"
+    ></AdminNewcategory>
     <div class="flex gap-8 border-l bg-gray-100 p-4">
       <span class="text-2xl font-semibold">CATEGORIES</span>
       <button
@@ -56,10 +62,8 @@
         </template>
         <Column field="id" header="Category ID" :sortable="true">
           <template #body="{ data }">
-            <NuxtLink class="block" :to="`/orders/${data.id}`"
-              >{{ data.id }}
-            </NuxtLink></template
-          >
+            {{ data.id }}
+          </template>
         </Column>
         <Column header="Name">
           <template #body="{ data }">
@@ -89,12 +93,6 @@
         <template #empty> No categories found. </template>
       </Datatable>
     </div>
-    <AdminNewcategory
-      :isOpen="isOpenCategoryCreate"
-      @cls="setIsOpenCategoryCreate(false)"
-      @success="refreshCategories"
-      :category="categoryProp"
-    ></AdminNewcategory>
   </div>
 </template>
 
@@ -145,8 +143,10 @@ watch(selectedCategory, (val) => {
   router.push(`/admin/categories/category-${val.id}`);
 });
 definePageMeta({
-  title: 'Admin',
   layout: 'admin'
+});
+useMeta({
+  title: `Categories - Admin - Retwisst`
 });
 </script>
 

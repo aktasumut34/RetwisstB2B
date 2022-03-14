@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="mainContent flex flex-1 flex-col">
     <div class="flex gap-8 border-l bg-gray-100 p-4">
       <span class="text-2xl font-semibold">USERS</span>
       <div class="flex">
@@ -74,7 +74,7 @@
             </div>
           </div>
         </template>
-        <Column field="id" header="#NO" :sortable="true">
+        <Column field="id" header="User ID" :sortable="true">
           <template #body="{ data }">
             <NuxtLink class="block" :to="`/orders/${data.id}`"
               ># {{ data.id }}
@@ -286,8 +286,10 @@ watch(selectedUser, (val) => {
   router.push(`/admin/users/user-${val.id}`);
 });
 definePageMeta({
-  title: 'Admin',
   layout: 'admin'
+});
+useMeta({
+  title: `Users - Admin - Retwisst`
 });
 </script>
 

@@ -33,7 +33,7 @@
       ></AdminSidebarlink>
       <AdminSidebarlink
         title="Tickets"
-        to="tickets"
+        to="support"
         icon="pi-ticket"
         :isOpen="menu.open"
       ></AdminSidebarlink>

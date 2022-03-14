@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="mainContent flex flex-1 flex-col">
     <div class="flex gap-8 border-l bg-gray-100 p-4">
       <span class="text-2xl font-semibold"
         >CATEGORY: #{{ category.id
@@ -8,8 +8,8 @@
         ></span
       >
     </div>
-    <div class="flex flex-1 px-8 py-4">
-      <div class="grid w-full grid-cols-3 items-center justify-center gap-4">
+    <div class="flex max-h-screen flex-1 px-8 py-4 lg:max-h-[60%]">
+      <div class="grid w-full grid-cols-3 items-stretch justify-center gap-4">
         <div
           class="flex h-full flex-col gap-8 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
@@ -39,7 +39,7 @@
               }}</span></span
             >
             <span class="font-light"
-              >Creted:
+              >Created:
               <span class="text-sm font-semibold xl:text-lg">{{
                 dayjs(category.createdAt).format('LLL')
               }}</span></span
@@ -239,7 +239,7 @@ const removeCategory = () => {
         reverseButtons: true
       })
       .then(async (willDelete) => {
-        if (willDelete) {
+        if (willDelete.isConfirmed) {
           const {
             success
           }: {
@@ -274,8 +274,10 @@ const removeCategory = () => {
 };
 
 definePageMeta({
-  title: 'Admin',
   layout: 'admin'
+});
+useMeta({
+  title: `Category: ${category.value?.CategoryDescriptions[0].name} - Admin - Retwisst`
 });
 </script>
 

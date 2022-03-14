@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="mainContent flex flex-1 flex-col">
     <div class="flex gap-8 border-l bg-gray-100 p-4">
       <span class="text-2xl font-semibold"
         >USER:
@@ -8,10 +8,12 @@
         ></span
       >
     </div>
-    <div class="flex flex-1 px-8 py-4">
-      <div class="grid w-full grid-cols-3 items-center justify-center gap-4">
+    <div class="flex max-h-screen flex-1 px-8 py-4 lg:max-h-[60%]">
+      <div
+        class="grid w-full grid-cols-1 grid-rows-none items-stretch justify-center gap-4 lg:grid-cols-3 lg:grid-rows-2"
+      >
         <div
-          class="flex h-[30vh] flex-col gap-8 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-8 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">General Information</span>
@@ -46,7 +48,7 @@
           </div>
         </div>
         <div
-          class="flex h-[30vh] flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">Addresses</span>
@@ -122,7 +124,7 @@
           </div>
         </div>
         <div
-          class="flex h-[30vh] flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">Phone Numbers</span>
@@ -142,17 +144,23 @@
           </div>
         </div>
         <div
-          class="flex h-[30vh] flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">Orders</span>
           </div>
           <template v-if="user.Orders.length > 0">
-            <div
-              class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
-              v-for="order in user.Orders"
-            >
-              {{ order.id }}
+            <div class="flex flex-col gap-2">
+              <NuxtLink
+                :to="`/admin/orders/order-${order.id}`"
+                class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
+                v-for="order in user.Orders"
+              >
+                ORDER: #{{ order.id }}
+                <span class="text-sm"
+                  >({{ dayjs(order.createdAt).format('LLL') }})</span
+                >
+              </NuxtLink>
             </div></template
           >
           <template v-else>
@@ -160,17 +168,23 @@
           </template>
         </div>
         <div
-          class="flex h-[30vh] flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">Tickets</span>
           </div>
           <template v-if="user.Tickets.length > 0">
-            <div
-              class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
-              v-for="ticket in user.Tickets"
-            >
-              {{ ticket.id }}
+            <div class="flex flex-col gap-2">
+              <NuxtLink
+                :to="`/admin/support/ticket-${ticket.id}`"
+                class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
+                v-for="ticket in user.Tickets"
+              >
+                TICKET: #{{ ticket.id }}
+                <span class="text-sm"
+                  >({{ dayjs(ticket.createdAt).format('LLL') }})</span
+                >
+              </NuxtLink>
             </div></template
           >
           <template v-else>
@@ -178,17 +192,22 @@
           </template>
         </div>
         <div
-          class="flex h-[30vh] flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
+          class="flex flex-col gap-6 overflow-y-auto rounded-md bg-slate-100 p-4"
         >
           <div>
             <span class="text-2xl">Current Logins</span>
           </div>
           <template v-if="user.Tokens.length > 0">
-            <div
-              class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
-              v-for="token in user.Tokens"
-            >
-              {{ token.id }}
+            <div>
+              <div
+                class="flex w-full justify-between rounded-lg bg-slate-200 px-4 py-2 text-left font-medium text-slate-800"
+                v-for="token in user.Tokens"
+              >
+                TOKEN: #{{ token.id }}
+                <span class="text-sm"
+                  >({{ dayjs(token.createdAt).format('LLL') }})</span
+                >
+              </div>
             </div></template
           >
           <template v-else>
@@ -204,6 +223,27 @@
         <div>
           <span class="text-2xl">Actions</span>
         </div>
+        <div class="flex gap-2">
+          <button
+            v-if="user.status === 1"
+            class="group flex items-center gap-2 rounded-md border border-retwisst-purple-darkest px-2 py-1 uppercase text-retwisst-purple-darkest transition-colors hover:bg-retwisst-purple-darkest hover:text-white active:bg-retwisst-purple-dark active:text-white"
+            @click="userStatusChange(-1)"
+          >
+            <i class="pi pi-times-circle"></i> <span>Block User</span></button
+          ><button
+            v-else
+            class="group flex items-center gap-2 rounded-md border border-retwisst-green-darkest px-2 py-1 uppercase text-retwisst-green-darkest transition-colors hover:bg-retwisst-green-darkest hover:text-white active:bg-retwisst-green-dark active:text-white"
+            @click="userStatusChange(1)"
+          >
+            <i class="pi pi-check-circle"></i> <span>Allow User</span>
+          </button>
+          <button
+            class="group flex items-center gap-2 rounded-md border border-retwisst-purple-darkest px-2 py-1 uppercase text-retwisst-purple-darkest transition-colors hover:bg-retwisst-purple-darkest hover:text-white active:bg-retwisst-purple-dark active:text-white"
+            @click="removeUser()"
+          >
+            <i class="pi pi-times-circle"></i> <span>Remove</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -215,6 +255,7 @@ import { useUserStore } from '~~/store';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { Disclosure, DisclosurePanel, DisclosureButton } from '@headlessui/vue';
+import { yesNoSwal, singleButtonSwal } from '~~/utils/swal';
 dayjs.extend(LocalizedFormat);
 definePageMeta({
   title: 'Admin',
@@ -224,6 +265,14 @@ const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
+const fetchUser = async () =>
+  $fetch(`http://localhost:3100/api/admin/users/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userStore.token}`
+    }
+  });
 const {
   data
 }: {
@@ -232,7 +281,7 @@ const {
       id?: number;
       name?: string;
       email?: string;
-      status?: boolean;
+      status?: number;
       createdAt?: string;
       updatedAt?: string;
       Addresses?: any[];
@@ -244,15 +293,7 @@ const {
     };
     success?: boolean;
   }>;
-} = await useAsyncData(`user-${id}`, () =>
-  $fetch(`http://localhost:3100/api/admin/users/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userStore.token}`
-    }
-  })
-);
+} = await useAsyncData(`user-${id}`, fetchUser);
 const activeStatusNameGetter = (status) => {
   switch (status) {
     case 1:
@@ -264,7 +305,91 @@ const activeStatusNameGetter = (status) => {
   }
 };
 if (!data.value) router.push('/admin/users');
-const user = data.value.user;
+const user = computed(() => data.value.user);
+
+const refreshUser = async () => {
+  data.value = await fetchUser();
+};
+
+const userStatusChange = async (status) => {
+  let html = '';
+  let confirmText = '';
+  switch (status) {
+    case 1:
+      html = `User <b>ID #${id}</b> will be approved and now can access Retwisst B2B!`;
+      confirmText = 'User has been approved.';
+      break;
+    case -1:
+      html = `User <b>ID #${id}</b> will be blocked and they cannot access Retwisst B2B no longer!`;
+      confirmText = 'User has been blocked.';
+      break;
+  }
+  yesNoSwal
+    .fire({
+      title: 'Are you sure?',
+      html: html,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    })
+    .then(async (result) => {
+      if (result.value) {
+        const response: { success: boolean } = await $fetch(
+          `http://localhost:3100/api/admin/users/approve`,
+          {
+            method: 'POST',
+            body: { id: user.value.id, status },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userStore.token}`
+            }
+          }
+        );
+        if (response.success) {
+          singleButtonSwal
+            .fire('Success!', confirmText, 'success')
+            .then(() => refreshUser());
+        }
+      }
+    });
+};
+const removeUser = async () => {
+  yesNoSwal
+    .fire({
+      title: 'Are you sure?',
+      html: `User <b>ID #${user.value.id}</b> will be removed from the database and you cannot retrieve it back!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    })
+    .then(async (result) => {
+      if (result.value) {
+        const response: { success: boolean } = await $fetch(
+          `http://localhost:3100/api/admin/users/remove`,
+          {
+            method: 'POST',
+            body: { id: user.value.id },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userStore.token}`
+            }
+          }
+        );
+        if (response.success) {
+          singleButtonSwal
+            .fire('Success!', 'User has been removed.', 'success')
+            .then(() => refreshUser());
+        }
+      }
+    });
+};
+useMeta({
+  title: `User: ${user.value.email} - Admin - Retwisst`
+});
 </script>
 
 <style scoped></style>

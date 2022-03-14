@@ -89,13 +89,13 @@
                   }"
                   ><span
                     v-if="
-                      ticket.TicketMessages[0].user.id === userStore.user.id
+                      ticket.TicketMessages[0].User.id === userStore.user.id
                     "
                     class="text-slate-500"
                     >You:
                   </span>
                   <span v-else class="text-slate-500"
-                    >{{ ticket.TicketMessages[0].user.name }}:
+                    >{{ ticket.TicketMessages[0].User.name }}:
                   </span>
                   {{ ticket.TicketMessages[0].message }}</span
                 >
