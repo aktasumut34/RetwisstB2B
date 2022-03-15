@@ -92,22 +92,6 @@
         <span class="orspan text-center text-slate-500">OR</span>
       </div>
       <div class="mt-8 flex flex-col gap-2">
-        <a
-          href="#"
-          class="flex w-full items-center rounded border border-slate-300 px-4 py-2 text-left text-lg font-thin text-slate-600 ring-slate-400 hover:bg-slate-200 focus:outline-none focus:ring-1 active:bg-slate-300"
-        >
-          <img src="/google.svg" class="mr-4 h-5 w-5" />
-          Continue with Google
-        </a>
-        <a
-          href="#"
-          class="flex w-full items-center rounded border border-slate-300 px-4 py-2 text-left text-lg font-thin text-slate-600 ring-slate-400 hover:bg-slate-200 focus:outline-none focus:ring-1 active:bg-slate-300"
-        >
-          <img src="/linkedin.svg" class="mr-4 h-5 w-5" />
-          Continue with LinkedIn
-        </a>
-      </div>
-      <div class="mt-8 flex flex-col gap-2">
         <NuxtLink to="/register">Forgot password?</NuxtLink>
         <NuxtLink to="/register">Create a new account</NuxtLink>
       </div>

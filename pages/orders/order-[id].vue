@@ -1,5 +1,101 @@
 <template>
   <div v-if="userStore?.token">
+    <TransitionRoot appear :show="isOpenFileUpload" as="div">
+      <Dialog as="div">
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div class="min-h-screen px-4 text-center">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0"
+              enter-to="opacity-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100"
+              leave-to="opacity-0"
+            >
+              <DialogOverlay
+                class="fixed inset-0 bg-black bg-opacity-70"
+                @click="setIsOpenFileUpload(false)"
+              />
+            </TransitionChild>
+
+            <span class="inline-block h-screen align-middle" aria-hidden="true">
+              &#8203;
+            </span>
+
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
+            >
+              <div
+                class="my-8 inline-block w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <DialogTitle
+                  as="h3"
+                  class="text-lg font-medium leading-6 text-gray-900"
+                >
+                  Upload Payment Notice
+                </DialogTitle>
+                <div class="mt-4 flex flex-col gap-5">
+                  <div class="flex flex-col gap-1">
+                    <span
+                      >File
+                      <span class="text-xs text-slate-500"
+                        >(png, jpg or pdf files are accepted)</span
+                      ></span
+                    >
+                    <input
+                      class="block w-full cursor-pointer rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-sm text-gray-900 focus:border-transparent focus:outline-none"
+                      type="file"
+                      @change="fileUpload"
+                    />
+                  </div>
+                  <div class="group relative">
+                    <textarea
+                      type="text"
+                      class="relative w-full resize-none rounded border-0 bg-white py-3 pl-6 text-sm text-slate-600 shadow outline-none transition focus:outline-none focus:ring"
+                      v-model="fileDescription"
+                      rows="6"
+                    ></textarea>
+
+                    <span
+                      class="pointer-events-none absolute top-2 left-6 bg-white px-0 text-lg text-slate-300 transition-all group-focus-within:-translate-x-5 group-focus-within:-translate-y-6 group-focus-within:scale-75 group-focus-within:px-1 group-focus-within:text-slate-500"
+                      :class="{
+                        '-translate-x-5 -translate-y-6 scale-75 !px-1 text-slate-500':
+                          fileDescription.length > 0
+                      }"
+                      >Description</span
+                    >
+                  </div>
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-slate-100 hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:ring-offset-2"
+                    @click="uploadFile"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-sm font-medium text-white hover:bg-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+                    @click="setIsOpenFileUpload(false)"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
     <div class="flex flex-1 flex-col gap-6" id="printable">
       <div class="flex items-center justify-between gap-4 lg:gap-6">
         <NuxtLink
@@ -20,7 +116,7 @@
             /></svg></NuxtLink
         ><span class="block w-full text-3xl font-thin">ORDER #{{ id }}</span>
       </div>
-      <div class="flex flex-col items-start">
+      <div class="flex gap-4">
         <button
           v-print="printObj"
           class="no-print rounded-md bg-sky-600 px-4 py-1 text-white transition-colors hover:bg-sky-700 active:bg-sky-900"
@@ -32,6 +128,14 @@
           >
           <span v-else class="flex items-center justify-center gap-2"
             ><i class="pi pi-print"></i><span>Print</span></span
+          >
+        </button>
+        <button
+          class="no-print rounded-md bg-blue-600 px-4 py-1 text-white transition-colors hover:bg-blue-700 active:bg-blue-900"
+          @click="setIsOpenFileUpload(true)"
+        >
+          <span class="flex items-center justify-center gap-2"
+            ><i class="pi pi-plus"></i><span>Payment Notice</span></span
           >
         </button>
       </div>
@@ -190,49 +294,87 @@
             </div>
           </div>
         </div>
-        <div
-          class="flex flex-col gap-2 px-3"
-          :class="{ 'no-print': history.length <= 0 }"
-        >
-          <div class="text-xl font-light text-slate-700">
-            ORDER STATUS HISTORY
-          </div>
-          <div class="flex flex-col gap-4" v-if="history.length > 0">
-            <div
-              class="flex items-center gap-12 rounded-md px-4 py-2 text-white shadow-md"
-              :style="{
-                backgroundColor: getStatusBackgroundColor(h.OrderStatus.type)
-              }"
-              v-for="(h, index) in history"
-            >
-              <div class="text-2xl">#{{ history.length - index }}</div>
-              <div class="flex flex-1 flex-col gap-2">
-                <div class="flex items-center justify-between">
-                  <div>{{ h.description }}</div>
-                  <div class="text-xs text-slate-100">
-                    {{ dayjs(h.createdAt).format('LLL') }}
+        <div class="flex flex-col gap-12 px-3">
+          <div
+            class="flex flex-col gap-2"
+            :class="{ 'no-print': history.length <= 0 }"
+          >
+            <div class="text-xl font-light text-slate-700">
+              ORDER STATUS HISTORY
+            </div>
+            <div class="flex flex-col gap-4" v-if="history.length > 0">
+              <div
+                class="flex items-center gap-12 rounded-md px-4 py-2 text-white shadow-md"
+                :style="{
+                  backgroundColor: getStatusBackgroundColor(h.OrderStatus.type)
+                }"
+                v-for="(h, index) in history"
+              >
+                <div class="text-2xl">#{{ history.length - index }}</div>
+                <div class="flex flex-1 flex-col gap-2">
+                  <div class="flex items-center justify-between">
+                    <div>{{ h.description }}</div>
+                    <div class="text-xs text-slate-100">
+                      {{ dayjs(h.createdAt).format('LLL') }}
+                    </div>
                   </div>
-                </div>
-                <div class="text-sm">
-                  <i
-                    class="no-print !text-sm opacity-90"
-                    :class="'pi pi-' + getStatusIcon(h.OrderStatus.type)"
-                  />
-                  {{ h.OrderStatus.name }}
+                  <div class="text-sm">
+                    <i
+                      class="no-print !text-sm opacity-90"
+                      :class="'pi pi-' + getStatusIcon(h.OrderStatus.type)"
+                    />
+                    {{ h.OrderStatus.name }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="flex flex-col rounded-lg bg-slate-700 px-4 py-4 text-slate-100"
-            v-else
-          >
-            <span class="text-lg font-bold">No History</span>
-            <span class="text-md font-light"
-              >Your order (#{{ id }}) doesn't have any status history. When
-              anything about your order gets updated, your order status will
-              appear here.</span
+            <div
+              class="flex flex-col rounded-lg bg-slate-700 px-4 py-4 text-slate-100"
+              v-else
             >
+              <span class="text-lg font-bold">No History</span>
+              <span class="text-md font-light"
+                >Your order (#{{ id }}) doesn't have any status history. When
+                anything about your order gets updated, your order status will
+                appear here.</span
+              >
+            </div>
+          </div>
+          <div class="no-print flex flex-col gap-2">
+            <div class="text-xl font-light text-slate-700">UPLOADED FILES</div>
+            <div class="flex flex-col gap-4" v-if="files.length > 0">
+              <div
+                class="flex items-center gap-12 rounded-md px-4 py-2 text-slate-700 shadow-md"
+                v-for="(f, index) in files"
+              >
+                <div class="text-2xl">#{{ files.length - index }}</div>
+                <div class="flex flex-1 flex-col gap-2">
+                  <div class="flex items-center justify-between">
+                    <div>{{ f.description || 'No description.' }}</div>
+                    <div class="text-xs text-slate-500">
+                      {{ dayjs(f.createdAt).format('LLL') }}
+                    </div>
+                  </div>
+                  <div class="text-sm">
+                    <a :href="f.file" target="_blank">
+                      <i class="no-print pi pi-external-link mr-1 !text-sm" />
+                      Show File
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex flex-col rounded-lg bg-slate-700 px-4 py-4 text-slate-100"
+              v-else
+            >
+              <span class="text-lg font-bold">No Files</span>
+              <span class="text-md font-light"
+                >Your order (#{{ id }}) doesn't have any uploaded files. You can
+                upload your payment notice with the "Payment Notice" button
+                above.</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -245,12 +387,25 @@ import { Ref } from 'nuxt3/dist/app/compat/vue-demi';
 import { useUserStore } from '~~/store';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import {
+  Dialog,
+  DialogOverlay,
+  DialogTitle,
+  TransitionRoot,
+  TransitionChild
+} from '@headlessui/vue';
+import { singleButtonSwal } from '~~/utils/swal';
 
 dayjs.extend(LocalizedFormat);
 const userStore = useUserStore();
 const route = useRoute();
 const id = route.params.id;
-
+const fetchOrder = async () =>
+  await $fetch(`http://localhost:3100/api/order/one/${id}`, {
+    headers: {
+      Authorization: `Bearer ${userStore.token}`
+    }
+  });
 const {
   data
 }: {
@@ -294,25 +449,23 @@ const {
       ];
       ShippingAddress?: { [key: string]: string };
       ShippingMethod?: { [key: string]: string };
+      OrderFiles?: [
+        { id: number; file: string; createdAt: string; description: string }
+      ];
       totalPrice?: number;
       status?: string;
       createdAt: string;
     };
     success?: boolean;
   }>;
-} = await useAsyncData('order', () =>
-  $fetch(`http://localhost:3100/api/order/one/${id}`, {
-    headers: {
-      Authorization: `Bearer ${userStore.token}`
-    }
-  })
-);
-const order = data.value.order;
-const items = order.OrderItems;
-const address = order.ShippingAddress;
-const method = order.ShippingMethod;
-const status = order.OrderStatus;
-const history = order.OrderStatusHistories;
+} = await useAsyncData('order', fetchOrder);
+const order = computed(() => data.value.order);
+const items = computed(() => order.value.OrderItems);
+const address = computed(() => order.value.ShippingAddress);
+const method = computed(() => order.value.ShippingMethod);
+const status = computed(() => order.value.OrderStatus);
+const history = computed(() => order.value.OrderStatusHistories);
+const files = computed(() => order.value.OrderFiles);
 
 const getStatusBackgroundColor = (type: string) => {
   switch (type) {
@@ -347,7 +500,7 @@ const printLoading = ref(false);
 
 const printObj = {
   id: 'printable',
-  popTitle: 'Retwisst B2B - Order #' + order.id,
+  popTitle: 'Retwisst B2B - Order #' + order.value.id,
   beforeOpenCallback: () => {
     printLoading.value = true;
   },
@@ -356,6 +509,44 @@ const printObj = {
   }
 };
 
+const isOpenFileUpload = ref(false);
+const setIsOpenFileUpload = (value: boolean) => {
+  isOpenFileUpload.value = value;
+};
+const file = ref('');
+const fileDescription = ref('');
+const fileUpload = (event) => {
+  file.value = event.target.files[0];
+};
+const uploadFile = async () => {
+  let formData = new FormData();
+  formData.append('file', file.value);
+  formData.append('id', order.value.id.toString());
+  formData.append('description', fileDescription.value);
+  const { success }: { success?: boolean } = await $fetch(
+    `http://localhost:3100/api/order/upload-file`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userStore.token}`
+      },
+      body: formData
+    }
+  );
+  if (success)
+    singleButtonSwal
+      .fire('Success', 'File uploaded successfully.', 'success')
+      .then(async () => {
+        setIsOpenFileUpload(false);
+        data.value = await fetchOrder();
+      });
+  else
+    singleButtonSwal.fire(
+      'Error',
+      'Something went wrong. Please try again.',
+      'error'
+    );
+};
 useMeta({
   title: `ORDER #${id} - Orders - Retwisst B2B`
 });
@@ -363,10 +554,6 @@ useMeta({
 
 <style lang="scss">
 @media print {
-  // body {
-  //   color-adjust: exact;
-  //   -webkit-print-color-adjust: exact;
-  // }
   .p-paginator {
     display: none !important;
   }
